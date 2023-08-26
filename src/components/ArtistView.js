@@ -6,48 +6,46 @@ function ArtistView() {
     const [ artistData, setArtistData ] = useState([])
     const navigate = useNavigate()
     
-    useEffect(() => {
+    useEffect(() => {        
         const API_URL = `http://localhost:3000/album/${id}`
         const fetchData = async () => {
             const response = await fetch(API_URL)
             const resData = await response.json()
-            console.log('resData is: ' + resData)
             setArtistData(resData.results)
         }
         fetchData()
-    }, [id]  )
+    }, [id] )
 
-        const justAlbums = artistData.filter(entry => entry.collectionType === 'Album')
-        console.log('justAlbums is: ' + justAlbums)
-    
-
-    const renderAlbums = justAlbums.map((album, i) => {
-    return (
-        <div key={i}>
-            <Link to={`/album/${album.collectionId}`}>
-            <p>{album.collectionName}</p>
-            </Link>
-            
-        </div>
-    )
-    })
 
     const navButtons = () => {
         return (
             <div>
-                <button onClick={() => navigate(-1)}>Back</button>
-                <button onClick={() => navigate('/')}>Home</button>
+                <button name="back" onClick={() => navigate(-1)}>Back</button>
+                &nbsp; | &nbsp;
+                <button name="home" onClick={() => navigate('/')}>Home</button>
             </div>
         )
     }
-    
+
+    const justAlbums = artistData.filter(entry => entry.collectionType === 'Album')
+     
+    const renderAlbums = justAlbums.map((album, i) => {
+         return (
+             <div key={i}>
+                <Link to={`/album/${album.collectionId}`} >
+                    <p>{album.collectionName}</p>
+                </Link>
+            </div>
+        )
+    })   
+
     return (
         <div>
-            {artistData.length > 0 ? <h2>{artistData[0].artistName}</h2> : <h2>Loading ....</h2>}
-            {navButtons()}
+            {navButtons}
+            {artistData.length > 0 ? <h2>{artistData[0].artistName}</h2> : <h2> lloading ...</h2>}
             {renderAlbums}
         </div>
-    )   
+    )  
 }
 
 export default ArtistView
